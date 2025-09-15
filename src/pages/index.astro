@@ -1,0 +1,38 @@
+---
+import PlotFigure from "../components/PlotFigure.astro";
+import Layout from "../layouts/Layout.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../assets/penguins.json";
+---
+
+<Layout>
+  <h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
+  <br>
+<nav>
+  <select id="species">
+<option value="Adelie">Adelie</option>
+<option value="Chinstrap">Chinstrap</option>
+<option value="Gentoo">Gentoo</option>
+</select>
+<script>
+document.querySelector("#species")?.addEventListener("change", (evt) => {
+const value = (evt.target as HTMLSelectElement).value;
+const segments = location.pathname.split("/");
+segments[segments.length - 1] = value;
+location.pathname = segments.join("/");
+});
+</script>
+    </nav>
+<br>
+  <PlotFigure
+    options={{
+      marks: [
+        Plot.dot(penguins, {
+          x: "culmen_length_mm",
+          y: "culmen_depth_mm",
+          stroke: "species",
+        }),
+      ],
+    }}
+  />
+</Layout>

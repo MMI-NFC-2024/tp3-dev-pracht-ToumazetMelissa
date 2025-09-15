@@ -1,0 +1,102 @@
+---
+import PlotFigure from "../components/PlotFigure.astro";
+import Layout from "../layouts/Layout.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../assets/penguins.json";
+
+const penguinsAdelie = penguins.filter(({species}) => species === "Adelie");
+const penguinsGentoo = penguins.filter(({species}) => species === "Gentoo");
+const penguinsChinstrap = penguins.filter(({species}) => species === "Chinstrap");
+---
+
+<style>
+  nav {
+    margin-bottom: 1rem;
+  }
+  nav a {
+    margin-right: 1rem;
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+
+  /* Conteneur du slider */
+  .slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* pour "coller" aux slides */
+    -webkit-overflow-scrolling: touch; /* pour smooth scroll sur iOS */
+    gap: 1rem;
+  }
+
+  /* Chaque slide (section) */
+  section.slide {
+    min-width: 300px; /* largeur fixe ou adaptable */
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    border: 1px solid black;
+    padding: 1rem;
+    border-radius: 6px;
+    background: #f9f9f9;
+  }
+</style>
+
+<Layout>
+  <h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
+  <br>
+  <nav>
+    <a href="#adelie">Adélie</a>
+    <a href="#gentoo">Gentoo</a>
+    <a href="#chinstrap">Chinstrap</a>
+  </nav>
+<br>
+  <div class="slider">
+    <section id="adelie" class="slide">
+      <h2>Adélie</h2>
+      <PlotFigure
+        options={{
+          marks: [
+            Plot.dot(penguinsAdelie, {
+              x: "culmen_length_mm",
+              y: "culmen_depth_mm",
+              stroke: "species",
+            }),
+          ],
+        }}
+      />
+    </section>
+
+    <section id="gentoo" class="slide">
+      <h2>Gentoo</h2>
+      <PlotFigure
+        options={{
+          marks: [
+            Plot.dot(penguinsGentoo, {
+              x: "culmen_length_mm",
+              y: "culmen_depth_mm",
+              stroke: "species",
+            }),
+          ],
+        }}
+      />
+    </section>
+
+    <section id="chinstrap" class="slide">
+      <h2>Chinstrap</h2>
+      <PlotFigure
+        options={{
+          marks: [
+            Plot.dot(penguinsChinstrap, {
+              x: "culmen_length_mm",
+              y: "culmen_depth_mm",
+              stroke: "species",
+            }),
+          ],
+        }}
+      />
+    </section>
+  </div>
+</Layout>
