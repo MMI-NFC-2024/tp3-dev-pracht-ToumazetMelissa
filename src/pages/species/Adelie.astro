@@ -10,10 +10,20 @@ const penguinsAdelie = penguins.filter(({species})=>species==="Adelie")
   <h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
 <br>
 <nav>
-      <a href="/species/Adelie" target="penguin-frame">Adélie</a>
-      <a href="/species/Gentoo" target="penguin-frame">Gentoo</a>
-      <a href="/species/Chinstrap" target="penguin-frame">Chinstrap</a>
-    </nav>
+  <select id="species">
+    <option value="Adelie">Adelie</option>
+    <option value="Chinstrap">Chinstrap</option>
+    <option value="Gentoo">Gentoo</option>
+  </select>
+  <script>
+    document.querySelector("#species")?.addEventListener("change", (evt) => {
+      const value = (evt.target as HTMLSelectElement).value;
+      window.location.href = `/species/${value}`;
+    });
+  </script>
+</nav>
+<br>
+<h2>Adelie</h2>
 <br>
 
   <PlotFigure

@@ -10,19 +10,19 @@ import penguins from "../assets/penguins.json";
   <br>
 <nav>
   <select id="species">
-<option value="Adelie">Adelie</option>
-<option value="Chinstrap">Chinstrap</option>
-<option value="Gentoo">Gentoo</option>
-</select>
-<script>
-document.querySelector("#species")?.addEventListener("change", (evt) => {
-const value = (evt.target as HTMLSelectElement).value;
-const segments = location.pathname.split("/");
-segments[segments.length - 1] = value;
-location.pathname = segments.join("/");
-});
-</script>
-    </nav>
+    <option value="Adelie">Adelie</option>
+    <option value="Chinstrap">Chinstrap</option>
+    <option value="Gentoo">Gentoo</option>
+  </select>
+  <script>
+    document.querySelector("#species")?.addEventListener("change", (evt) => {
+      const value = (evt.target as HTMLSelectElement).value;
+      window.location.href = `/species/${value}`;
+    });
+  </script>
+</nav>
+<br>
+<h2>Toutes les espèces</h2>
 <br>
   <PlotFigure
     options={{
