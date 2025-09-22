@@ -1,0 +1,48 @@
+---
+import PlotFigure from "../components/PlotFigure.astro";
+import Layout from "../layouts/Layout.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../assets/penguins.json";
+---
+
+<Layout>
+  <h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
+  <br>
+
+<nav>
+  <ul>
+    <li><a href="#" data-url="/page1" class="iframe-link">Page 1</a></li>
+    <li><a href="#" data-url="/page2" class="iframe-link">Page 2</a></li>
+  </ul>
+</nav>
+
+<iframe id="contentFrame" src="/page1" width="800" height="600"></iframe>
+
+<script>
+  document.querySelectorAll('.iframe-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const url = this.getAttribute('data-url');
+      const iframe = document.getElementById('contentFrame');
+      if (iframe && url) {
+        iframe.src = url;
+      }
+    });
+  });
+</script>
+<br>
+<h2>Toutes les espèces</h2>
+<br>
+  <PlotFigure
+    options={{
+      marks: [
+        Plot.dot(penguins, {
+          x: "culmen_length_mm",
+          y: "culmen_depth_mm",
+          stroke: "species",
+        }),
+      ],
+    }}
+  />
+
+</Layout>
