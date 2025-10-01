@@ -1,39 +1,17 @@
 ---
-import PlotFigure from "../components/PlotFigure.astro";
 import Layout from "../layouts/Layout.astro";
-import * as Plot from "@observablehq/plot";
-import penguins from "../assets/penguins.json";
 ---
 
 <Layout>
   <h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
   <br>
 <nav>
-  <select id="species">
-    <option value="Adelie">Adelie</option>
-    <option value="Chinstrap">Chinstrap</option>
-    <option value="Gentoo">Gentoo</option>
-  </select>
-  <script>
-    document.querySelector("#species")?.addEventListener("change", (evt) => {
-      const value = (evt.target as HTMLSelectElement).value;
-      window.location.href = `/species/${value}`;
-    });
-  </script>
-</nav>
-<br>
-<h2>Toutes les espèces</h2>
-<br>
-  <PlotFigure
-    options={{
-      marks: [
-        Plot.dot(penguins, {
-          x: "culmen_length_mm",
-          y: "culmen_depth_mm",
-          stroke: "species",
-        }),
-      ],
-    }}
-  />
+  
+
+  <nav>
+    <a href="simplepenguin">Simple (toutes les espèces)</a> |
+    <a href="penguin-filtre">Avec filtre par espèce</a> |
+    <a href="penguin-multifitre">Avec filtres multi-critères</a> |
+  </nav>
 
 </Layout>

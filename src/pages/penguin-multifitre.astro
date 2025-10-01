@@ -1,0 +1,96 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+
+<Layout>
+
+    <h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
+    <br>
+    <nav>
+        <a href="/">Acceuil</a> |
+        <a href="simplepenguin">Simple (toutes les espèces)</a> |
+        <a href="penguin-filtre">Avec filtre par espèce</a> |
+        <a href="penguin-multifitre">Avec filtres multi-critères</a>
+    </nav>
+    <br />
+
+	<form id="filters">
+		<label>
+			Espèce :
+			<select id="species">
+				<option value="">Toutes</option>
+				<option value="Adelie">Adelie</option>
+				<option value="Chinstrap">Chinstrap</option>
+				<option value="Gentoo">Gentoo</option>
+			</select>
+		</label>
+		<label>
+			Île :
+			<select id="island">
+				<option value="">Toutes</option>
+				<option value="Biscoe">Biscoe</option>
+				<option value="Dream">Dream</option>
+				<option value="Torgersen">Torgersen</option>
+			</select>
+		</label>
+		<label>
+			Sexe :
+			<select id="sex">
+				<option value="">Tous</option>
+				<option value="MALE">MALE</option>
+				<option value="FEMALE">FEMALE</option>
+			</select>
+		</label>
+	</form>
+	<br />
+	<h2>Filtrage multi-critères</h2>
+	<br />
+	<div id="plot-container"></div>
+	<script type="module">
+        import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot/+esm";
+
+        const container = document.getElementById("plot-container");
+        const speciesSelect = document.getElementById("species");
+        const islandSelect = document.getElementById("island");
+        const sexSelect = document.getElementById("sex");
+
+        let penguins = [];
+
+        async function loadData() {
+            const res = await fetch("/src/assets/penguins.json");
+            penguins = await res.json();
+            drawPlot();
+        }
+
+        function filterData() {
+            let filtered = penguins;
+            if (speciesSelect.value) filtered = filtered.filter(p => p.species === speciesSelect.value);
+            if (islandSelect.value) filtered = filtered.filter(p => p.island === islandSelect.value);
+            if (sexSelect.value) filtered = filtered.filter(p => p.sex === sexSelect.value);
+            return filtered;
+        }
+
+        function drawPlot() {
+            container.innerHTML = "";
+            const data = filterData();
+            const plot = Plot.plot({
+            marks: [
+                Plot.dot(data, {
+                x: "culmen_length_mm",
+                y: "culmen_depth_mm",
+                stroke: "species",
+                })
+            ]
+            });
+            container.appendChild(plot);
+        }
+
+        speciesSelect.addEventListener("change", drawPlot);
+        islandSelect.addEventListener("change", drawPlot);
+        sexSelect.addEventListener("change", drawPlot);
+
+        loadData();
+        </script>
+</Layout>
+
